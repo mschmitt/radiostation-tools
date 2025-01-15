@@ -1,0 +1,9 @@
+# Yes it's TOML, get over it.
+api_user      = "xxx"
+api_key       = "xxx"
+api_base      = "https://nextcloud.xxx/apps/music/subsonic/rest/"
+want_playlist = "xxx"
+tracks_dir    = "/path/to/live"
+playlist_file = "/path/to/live/station.txt"
+liquid_socket = "/path/to/live/station.socket"
+stats_file    = "/var/www/xxx/stats.json"
