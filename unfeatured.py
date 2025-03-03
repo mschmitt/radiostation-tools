@@ -51,3 +51,18 @@ for album in unfeatured_albums:
     table.append([unfeatured_albums[album]['artist'], unfeatured_albums[album]['title']])
 
 print(tabulate.tabulate(table))
+
+# Create playlist of unfeatured tracks
+try: 
+    unfeatured_pl_id = find_id_for_playlist('Unfeatured', playlists)
+    requests.get(f"{config['api_base']}/deletePlaylist", query_options | {'id': unfeatured_pl_id})
+except:
+    pass
+r_newpl = requests.get(f"{config['api_base']}/createPlaylist", query_options | {'name': 'Unfeatured'})
+newpl_id = (r_newpl.json())['subsonic-response']['playlist']['id']
+
+for album in unfeatured_albums:
+    r_unfeatured_tracks = requests.get(f"{config['api_base']}/getAlbum", query_options | {'id': unfeatured_albums[album]['id']})
+    for song in (r_unfeatured_tracks.json())['subsonic-response']['album']['song']:
+        print(f"Add to unfeatured playlist: {song['title']} by {song['artist']}")
+        r_newpl_add = requests.get(f"{config['api_base']}/updatePlaylist", query_options | {'playlistId': unfeatured_pl_id, 'songIdToAdd': song['id']})
